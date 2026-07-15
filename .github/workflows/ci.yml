@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run unit tests
+        run: PYTHONPATH=src python -m unittest discover -s tests
+      - name: Run sample plan
+        run: |
+          mkdir -p build
+          PYTHONPATH=src python -m rankguard plan \
+            --old examples/old_sitemap.xml \
+            --new examples/new_sitemap.xml \
+            --redirects build/redirects.csv \
+            --report build/migration-report.html \
+            --json build/migration-report.json \
+            --rules build/nginx-redirects.conf
