@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="RankGuard browser UI for local-first SEO migration redirect mapping and launch-risk reports.">
+  <title>RankGuard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">RankGuard</p>
+      <h1>SEO Migration Console</h1>
+    </div>
+    <nav class="top-actions" aria-label="Project links">
+      <a href="https://github.com/anchitjaincfa/rankguard" target="_blank" rel="noreferrer">GitHub</a>
+      <button id="loadSample" type="button">Sample</button>
+    </nav>
+  </header>
+
+  <main class="workspace">
+    <section class="input-grid" aria-label="Migration inputs">
+      <article class="panel input-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Source</p>
+            <h2>Old URLs</h2>
+          </div>
+          <label class="file-button">
+            <input id="oldFile" type="file" accept=".xml,.csv,.tsv,.txt,text/xml,text/csv,text/plain">
+            Upload
+          </label>
+        </div>
+        <textarea id="oldInput" spellcheck="false" aria-label="Old URL inventory"></textarea>
+      </article>
+
+      <article class="panel input-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Target</p>
+            <h2>New URLs</h2>
+          </div>
+          <label class="file-button">
+            <input id="newFile" type="file" accept=".xml,.csv,.tsv,.txt,text/xml,text/csv,text/plain">
+            Upload
+          </label>
+        </div>
+        <textarea id="newInput" spellcheck="false" aria-label="New URL inventory"></textarea>
+      </article>
+    </section>
+
+    <section class="toolbar panel" aria-label="Controls">
+      <div class="control">
+        <label for="minScore">Min score</label>
+        <div class="range-row">
+          <input id="minScore" type="range" min="0.35" max="0.95" value="0.58" step="0.01">
+          <output id="scoreValue" for="minScore">0.58</output>
+        </div>
+      </div>
+      <div class="control">
+        <label for="rulesFormat">Rules</label>
+        <select id="rulesFormat">
+          <option value="nginx">nginx</option>
+          <option value="apache">Apache</option>
+        </select>
+      </div>
+      <div class="control actions">
+        <button id="generate" class="primary" type="button">Generate</button>
+        <button id="copyCsv" type="button" disabled>Copy CSV</button>
+        <button id="downloadCsv" type="button" disabled>CSV</button>
+        <button id="downloadJson" type="button" disabled>JSON</button>
+        <button id="downloadReport" type="button" disabled>Report</button>
+        <button id="downloadRules" type="button" disabled>Rules</button>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Migration summary">
+      <article class="metric">
+        <span>Mapped</span>
+        <strong id="mappedMetric">0</strong>
+      </article>
+      <article class="metric">
+        <span>Unmatched</span>
+        <strong id="unmatchedMetric">0</strong>
+      </article>
+      <article class="metric">
+        <span>Low Confidence</span>
+        <strong id="lowMetric">0</strong>
+      </article>
+      <article class="metric">
+        <span>Risk</span>
+        <strong id="riskMetric">-</strong>
+      </article>
+    </section>
+
+    <section class="results-grid">
+      <article class="panel issues-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Review</p>
+            <h2>Priority Issues</h2>
+          </div>
+          <span id="issueCount" class="count-pill">0</span>
+        </div>
+        <div id="issues" class="issue-list"></div>
+      </article>
+
+      <article class="panel mappings-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Redirect Map</p>
+            <h2>Candidate Mappings</h2>
+          </div>
+          <span id="mappingCount" class="count-pill">0</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Old URL</th>
+                <th>New URL</th>
+                <th>Score</th>
+                <th>Confidence</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody id="mappingRows">
+              <tr><td colspan="5" class="empty">No mappings generated.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <template id="issueTemplate">
+    <div class="issue">
+      <strong></strong>
+      <span></span>
+      <code></code>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

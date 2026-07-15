@@ -28,7 +28,13 @@ From a checkout, you can also run:
 PYTHONPATH=src python3 -m rankguard --help
 ```
 
-## Quick Start
+## Browser UI
+
+The repository also includes a static browser UI in `index.html`, `styles.css`, and `app.js`. It runs the migration planner entirely in the browser: paste or upload old and new URL inventories, generate candidate mappings, review issues, and download CSV, JSON, HTML, nginx, or Apache outputs.
+
+No backend is required for the UI.
+
+## CLI Quick Start
 
 Generate a redirect map and report:
 
